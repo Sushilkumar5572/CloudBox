@@ -2,69 +2,60 @@ package com.cloudbox.service;
 
 import com.cloudbox.dto.LoginRequest;
 import com.cloudbox.dto.RegisterRequest;
-import com.cloudbox.dto.ResetPasswordRequest;
 import com.cloudbox.model.Role;
 import com.cloudbox.model.User;
 import com.cloudbox.repository.UserRepository;
 import com.cloudbox.util.JwtUtil;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AuthService {
 
-    @Autowired
-    UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final JwtUtil jwtUtil;
 
-    @Autowired
-    PasswordEncoder passwordEncoder;
-
-    @Autowired
-    JwtUtil jwtUtil;
+    public AuthService(UserRepository userRepository, JwtUtil jwtUtil) {
+        this.userRepository = userRepository;
+        this.jwtUtil = jwtUtil;
+    }
 
     public String register(RegisterRequest request) {
 
+        if (!request.getPassword().equals(request.getConfirmPassword())) {
+            throw new RuntimeException("Passwords do not match");
+        }
+
         User user = new User();
 
-        user.setName(request.getName());
+        user.setFirstName(request.getFirstName());
+        user.setLastName(request.getLastName());
+        user.setGender(request.getGender());
+        user.setAge(request.getAge());
+        user.setLocation(request.getLocation());
         user.setEmail(request.getEmail());
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setPassword(request.getPassword());
+
         user.setRole(Role.USER);
 
         userRepository.save(user);
 
-        return "User Registered Successfully";
+        return "User registered successfully";
     }
 
     public String login(LoginRequest request) {
 
-        User user = userRepository
-                .findByEmail(request.getEmail())
+        User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        if(passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-
-            return jwtUtil.generateToken(user.getEmail());
-
-        } else {
-
-            throw new RuntimeException("Invalid Password");
-
+        if (user.isSuspended()) {
+            throw new RuntimeException("Account suspended by admin");
         }
-    }
 
-    public String resetPassword(ResetPasswordRequest request) {
+        if (!user.getPassword().equals(request.getPassword())) {
+            throw new RuntimeException("Invalid password");
+        }
 
-        User user = userRepository
-                .findByEmail(request.getEmail())
-                .orElseThrow(() -> new RuntimeException("User not found"));
-
-        user.setPassword(passwordEncoder.encode(request.getNewPassword()));
-
-        userRepository.save(user);
-
-        return "Password reset successful";
+        return jwtUtil.generateToken(user.getEmail(), user.getRole().name());
     }
 }

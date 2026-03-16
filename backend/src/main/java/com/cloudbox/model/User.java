@@ -2,11 +2,6 @@ package com.cloudbox.model;
 
 import jakarta.persistence.*;
 
-/*
- User Entity
- Represents users stored in database
-*/
-
 @Entity
 @Table(name = "users")
 public class User {
@@ -15,7 +10,11 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    private String firstName;
+    private String lastName;
+    private String gender;
+    private int age;
+    private String location;
 
     @Column(unique = true)
     private String email;
@@ -25,48 +24,36 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    // Default constructor
+    private boolean suspended = false;
+
     public User() {}
 
-    // Getters and Setters
+    public Long getId() { return id; }
 
-    public Long getId() {
-        return id;
-    }
+    public String getFirstName() { return firstName; }
+    public void setFirstName(String firstName) { this.firstName = firstName; }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public String getLastName() { return lastName; }
+    public void setLastName(String lastName) { this.lastName = lastName; }
 
-    public String getName() {
-        return name;
-    }
+    public String getGender() { return gender; }
+    public void setGender(String gender) { this.gender = gender; }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public int getAge() { return age; }
+    public void setAge(int age) { this.age = age; }
 
-    public String getEmail() {
-        return email;
-    }
+    public String getLocation() { return location; }
+    public void setLocation(String location) { this.location = location; }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
 
-    public String getPassword() {
-        return password;
-    }
+    public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+    public Role getRole() { return role; }
+    public void setRole(Role role) { this.role = role; }
 
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
+    public boolean isSuspended() { return suspended; }
+    public void setSuspended(boolean suspended) { this.suspended = suspended; }
 }

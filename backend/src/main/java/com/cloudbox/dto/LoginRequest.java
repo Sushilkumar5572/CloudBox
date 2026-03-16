@@ -1,9 +1,5 @@
 package com.cloudbox.dto;
 
-/*
- Request body for login API
-*/
-
 public class LoginRequest {
 
     private String email;
