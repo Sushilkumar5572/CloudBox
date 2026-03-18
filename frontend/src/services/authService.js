@@ -1,3 +1,12 @@
+// import API from "./api";
+
+// export const registerUser = (data) => API.post("/auth/register", data);
+// export const loginUser = (data) => API.post("/auth/login", data);
+
+
+
+
+
 import API from "../api/axiosConfig";
 
 export const registerUser = (data) => {
@@ -7,9 +16,10 @@ export const registerUser = (data) => {
 export const loginUser = async (data) => {
 
   const response = await API.post("/auth/login", data);
+  
 
   localStorage.setItem("token", response.data);
-    localStorage.setItem("email", data.email);
+  localStorage.setItem("email", data.email);
   return response;
 
 };

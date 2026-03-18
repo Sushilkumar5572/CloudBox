@@ -1,15 +1,15 @@
-function AdminDashboard(){
+function AdminDashboard() {
 
- return(
+  return (
 
-   <div>
+    <div>
 
-     <h1>Admin Dashboard</h1>
-     <p>Welcome Admin</p>
+      <h1>Admin Dashboard</h1>
+      <p>Welcome Admin</p>
 
-   </div>
+    </div>
 
- )
+  )
 
 }
 
