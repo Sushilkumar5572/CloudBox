@@ -1,7 +1,7 @@
 import { logoutUser } from "../services/authService";
 import { useNavigate } from "react-router-dom";
 
-function Dashboard() {
+export default function Home() {
 
   const navigate = useNavigate();
 
@@ -25,5 +25,3 @@ function Dashboard() {
   );
 
 }
-
-export default Dashboard;

@@ -1,7 +1,7 @@
 package com.cloudbox.security;
 
 import com.cloudbox.util.JwtUtil;
-import io.jsonwebtoken.Claims;
+// import io.jsonwebtoken.Claims;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +21,9 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
-                                    HttpServletResponse response,
-                                    FilterChain filterChain)
-                                    throws ServletException, IOException {
+            HttpServletResponse response,
+            FilterChain filterChain)
+            throws ServletException, IOException {
 
         String authHeader = request.getHeader("Authorization");
 
@@ -35,12 +35,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
                 String email = jwtUtil.extractEmail(token);
 
-                UsernamePasswordAuthenticationToken authentication =
-                        new UsernamePasswordAuthenticationToken(
-                                email,
-                                null,
-                                Collections.emptyList()
-                        );
+                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                        email,
+                        null,
+                        Collections.emptyList());
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);
 

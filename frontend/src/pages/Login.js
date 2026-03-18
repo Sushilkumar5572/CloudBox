@@ -24,8 +24,17 @@ function Login() {
       // Save token
       localStorage.setItem("token", res.data);
 
+      //set role
+      // localStorage.setItem("role", res.data.role);
+      // console.log("User Role:", res);
+
       // Redirect
-      navigate("/dashboard");
+      if(localStorage.getItem("role") === "ADMIN") {
+        navigate("/admin");
+      } else {
+        navigate("/home");
+      }
+      // navigate("/dashboard");
 
     } catch (err) {
       alert("Invalid Credentials");
