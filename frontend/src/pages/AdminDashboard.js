@@ -1,11 +1,21 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function AdminDashboard() {
   const [users, setUsers] = useState([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
 
+  const navigate = useNavigate();
   const token = localStorage.getItem("token");
+
+  // ✅ Logout
+  const handleLogout = () => {
+    if (!window.confirm("Are you sure you want to logout?")) return;
+
+    localStorage.clear();
+    navigate("/login");
+  };
 
   // ✅ Fetch users
   const fetchUsers = () => {
@@ -25,7 +35,7 @@ function AdminDashboard() {
     fetchUsers();
   }, []);
 
-  // ✅ Suspend / Unsuspend toggle
+  // ✅ Toggle suspend
   const toggleSuspend = (user) => {
     const url = user.suspended
       ? `/api/admin/unsuspend/${user.id}`
@@ -51,19 +61,44 @@ function AdminDashboard() {
     }).then(fetchUsers);
   };
 
-  // ✅ Filter users
+  // ✅ Search filter
   const filteredUsers = users.filter(user =>
     user.email.toLowerCase().includes(search.toLowerCase())
   );
 
-  if (loading) return <h3 style={{ textAlign: "center" }}>Loading users...</h3>;
+  if (loading) {
+    return <h3 style={{ textAlign: "center" }}>Loading users...</h3>;
+  }
 
   return (
     <div style={{ padding: "30px" }}>
-      <h2 style={{ textAlign: "center" }}>Admin Dashboard</h2>
 
-      {/* 🔍 Search */}
-      <div style={{ textAlign: "center", marginBottom: "20px" }}>
+      {/* 🔝 HEADER */}
+      <div style={{
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        marginBottom: "20px"
+      }}>
+        <h2>Admin Dashboard</h2>
+
+        <button
+          onClick={handleLogout}
+          style={{
+            background: "#dc3545",
+            color: "white",
+            border: "none",
+            padding: "8px 12px",
+            borderRadius: "5px",
+            cursor: "pointer"
+          }}
+        >
+          Logout
+        </button>
+      </div>
+
+      {/* 🔍 SEARCH */}
+      <div style={{ marginBottom: "20px" }}>
         <input
           type="text"
           placeholder="Search by email..."
@@ -73,12 +108,12 @@ function AdminDashboard() {
             padding: "10px",
             width: "300px",
             borderRadius: "5px",
-            border: "1px solid #ccc",
+            border: "1px solid #ccc"
           }}
         />
       </div>
 
-      {/* 📋 Table */}
+      {/* 📋 TABLE */}
       <table style={{
         width: "100%",
         borderCollapse: "collapse",
@@ -151,15 +186,15 @@ function AdminDashboard() {
   );
 }
 
-// ✅ styles
+// 🎨 styles
 const thStyle = {
   padding: "12px",
-  border: "1px solid #ddd",
+  border: "1px solid #ddd"
 };
 
 const tdStyle = {
   padding: "10px",
-  border: "1px solid #ddd",
+  border: "1px solid #ddd"
 };
 
 export default AdminDashboard;

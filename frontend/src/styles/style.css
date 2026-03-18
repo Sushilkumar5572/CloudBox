@@ -1,34 +1,35 @@
-/* Reset */
+/* =========================
+   RESET
+========================= */
 * {
   box-sizing: border-box;
 }
 
-/* Body */
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  background: #f3f4f6;
   margin: 0;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background: #f5f7fa;
 }
 
 /* =========================
-   AUTH PAGE WRAPPER
+   AUTH WRAPPER
 ========================= */
 .auth-wrapper {
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px; /* prevents edge sticking on small screens */
+  padding: 20px;
 }
 
 /* =========================
-   CARD (Login/Register)
+   AUTH CARD
 ========================= */
 .auth-container {
   width: 100%;
-  max-width: 380px;   /* 👈 important */
+  max-width: 380px;
   background: #ffffff;
-  padding: 32px;      /* slightly reduced */
+  padding: 32px;
   border-radius: 12px;
   border: 1px solid #e5e7eb;
   box-shadow:
@@ -36,7 +37,9 @@ body {
     0 2px 6px rgba(0, 0, 0, 0.05);
 }
 
-/* Heading */
+/* =========================
+   HEADINGS
+========================= */
 h2 {
   text-align: center;
   margin-bottom: 30px;
@@ -47,7 +50,8 @@ h2 {
 /* =========================
    INPUTS
 ========================= */
-input {
+input,
+select {
   width: 100%;
   padding: 12px 14px;
   margin-bottom: 18px;
@@ -62,7 +66,8 @@ input::placeholder {
   color: #9ca3af;
 }
 
-input:focus {
+input:focus,
+select:focus {
   outline: none;
   background: #ffffff;
   border-color: #22c55e;
@@ -70,34 +75,75 @@ input:focus {
 }
 
 /* =========================
-   BUTTON
+   BUTTON SYSTEM (FIXED)
 ========================= */
-button {
-  width: 100%;
-  padding: 12px;
-  background: linear-gradient(135deg, #22c55e, #16a34a);
+.btn {
+  padding: 10px 16px;
+  border-radius: 6px;
   border: none;
-  color: white;
-  font-size: 15px;
-  font-weight: 500;
-  border-radius: 8px;
   cursor: pointer;
+  font-weight: 500;
   transition: all 0.2s ease;
 }
 
-button:hover {
+/* Full width button (ONLY where needed) */
+.btn-full {
+  width: 100%;
+}
+
+/* Primary button */
+.btn-primary {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  color: white;
+}
+
+.btn-primary:hover {
   box-shadow: 0 4px 10px rgba(34, 197, 94, 0.25);
   transform: translateY(-1px);
 }
 
-button:active {
-  transform: scale(0.97);
+/* Danger button */
+.btn-danger {
+  background: #dc3545;
+  color: white;
 }
 
+.btn-danger:hover {
+  background: #c82333;
+}
+
+/* Warning button */
+.btn-warning {
+  background: #ffc107;
+  color: black;
+}
+
+.btn-warning:hover {
+  background: #e0a800;
+}
+
+/* Success button */
+.btn-success {
+  background: #28a745;
+  color: white;
+}
+
+.btn-success:hover {
+  background: #218838;
+}
+
+/* Disabled */
 button:disabled {
   background: #9ca3af;
   cursor: not-allowed;
   box-shadow: none;
+}
+
+/* =========================
+   AUTH BUTTON FIX
+========================= */
+.auth-container button {
+  width: 100%;
 }
 
 /* =========================
@@ -127,7 +173,7 @@ a:hover {
 }
 
 /* =========================
-   NAVBAR (Optional match)
+   NAVBAR
 ========================= */
 .navbar {
   display: flex;
@@ -149,6 +195,27 @@ a:hover {
 }
 
 /* =========================
+   TABLE (ADMIN DASHBOARD)
+========================= */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #ffffff;
+}
+
+th {
+  background: #007bff;
+  color: white;
+  padding: 12px;
+  border: 1px solid #ddd;
+}
+
+td {
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+/* =========================
    UTILITIES
 ========================= */
 .text-center {
@@ -157,4 +224,49 @@ a:hover {
 
 .mt-10 {
   margin-top: 10px;
+}
+
+.container {
+  width: 1200px;
+  margin: auto;
+}
+
+/* =========================
+   PROFILE PAGE
+========================= */
+
+.profile-wrapper {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile-card {
+  width: 100%;
+  max-width: 420px;
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+.profile-card h2 {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.profile-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.profile-row span {
+  color: #6b7280;
+}
+
+.profile-row strong {
+  color: #111827;
 }

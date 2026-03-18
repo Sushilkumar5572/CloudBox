@@ -2,6 +2,7 @@ import { logoutUser } from "../services/authService";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import { useEffect, useState } from "react";
+import "../styles/style.css";
 
 export default function Home() {
   const navigate = useNavigate();
@@ -24,34 +25,59 @@ export default function Home() {
   }, [navigate]);
 
   const handleLogout = () => {
-    logoutUser(); // should clear token + role
+    logoutUser();
     navigate("/");
   };
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h1>CloudBox Dashboard</h1>
+    <div className="container" style={{ paddingTop: "40px" }}>
+      
+      {/* HEADER */}
+      <div style={{
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        marginBottom: "30px"
+      }}>
+        <h1>CloudBox Dashboard</h1>
 
-      <h3>Welcome, {user.sub || "User"} 👋</h3>
-      <p>Role: {user.role}</p>
-
-      <div style={{ marginTop: "20px" }}>
-        {/* 👤 Profile */}
-        <button onClick={() => navigate("/profile")}>
-          My Profile
-        </button>
-
-        {/* 👑 Admin panel */}
-        {user.role === "ADMIN" && (
-          <button onClick={() => navigate("/admin")}>
-            Admin Dashboard
-          </button>
-        )}
-
-        {/* 🚪 Logout */}
-        <button onClick={handleLogout}>
+        <button className="btn btn-danger" onClick={handleLogout}>
           Logout
         </button>
+      </div>
+
+      {/* USER INFO CARD */}
+      <div style={{
+        background: "#fff",
+        padding: "25px",
+        borderRadius: "10px",
+        boxShadow: "0 0 10px rgba(0,0,0,0.1)",
+        maxWidth: "500px"
+      }}>
+        <h3>Welcome, {user.sub || "User"} 👋</h3>
+        <p><b>Role:</b> {user.role}</p>
+
+        {/* ACTIONS */}
+        <div style={{ marginTop: "20px", display: "flex", gap: "10px" }}>
+          
+          {/* 👤 Profile */}
+          <button
+            className="btn btn-primary"
+            onClick={() => navigate("/profile")}
+          >
+            My Profile
+          </button>
+
+          {/* 👑 Admin */}
+          {user.role === "ADMIN" && (
+            <button
+              className="btn btn-warning"
+              onClick={() => navigate("/admin")}
+            >
+              Admin Panel
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );

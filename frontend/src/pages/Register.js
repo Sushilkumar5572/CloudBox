@@ -103,10 +103,11 @@ function Register() {
         </select>
 
         <input
-          type="date"
-          name="dob"
-          value={formData.dob}
-          onChange={handleChange}
+        type="number"
+        name="age"
+        placeholder="Age"
+        value={formData.age || ""}
+        onChange={handleChange}
         />
 
         <input
@@ -140,7 +141,7 @@ function Register() {
           onChange={handleChange}
         />
 
-        <button onClick={handleRegister} disabled={loading}>
+        <button className="btn btn-primary btn-full" onClick={handleRegister} disabled={loading}>
           {loading ? "Creating account..." : "Register"}
         </button>
 

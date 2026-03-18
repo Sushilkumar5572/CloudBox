@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { loginUser } from "../services/authService";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import "../styles/style.css";
 
 function Login() {
@@ -19,13 +19,9 @@ function Login() {
     setLoading(true);
 
     try {
-      // ✅ loginUser already:
-      // - stores token
-      // - stores role
-      // - returns decoded user
       const user = await loginUser({ email, password });
 
-      // ✅ Just redirect
+      // ✅ Redirect based on role
       if (user.role === "ADMIN") {
         navigate("/admin");
       } else {
@@ -44,6 +40,7 @@ function Login() {
       <div className="auth-container">
         <h2>Login to CloudBox</h2>
 
+        {/* Email */}
         <input
           type="email"
           placeholder="Email address"
@@ -51,6 +48,7 @@ function Login() {
           onChange={(e) => setEmail(e.target.value)}
         />
 
+        {/* Password */}
         <input
           type="password"
           placeholder="Password"
@@ -58,15 +56,21 @@ function Login() {
           onChange={(e) => setPassword(e.target.value)}
         />
 
-        <button onClick={handleLogin} disabled={loading}>
+        {/* Button */}
+        <button
+          className="btn btn-primary btn-full"
+          onClick={handleLogin}
+          disabled={loading}
+        >
           {loading ? "Logging in..." : "Login"}
         </button>
 
-        <a href="/reset-password">Forgot Password?</a>
+        {/* Links */}
+        <Link to="/reset-password">Forgot Password?</Link>
 
         <div className="divider"></div>
 
-        <a href="/register">Create an account</a>
+        <Link to="/register">Create an account</Link>
       </div>
     </div>
   );

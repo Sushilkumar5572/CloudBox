@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
+import "../styles/style.css";
 
 function UserDashboard() {
   const [user, setUser] = useState({});
   const [editMode, setEditMode] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   // ✅ Fetch profile
   useEffect(() => {
-    fetch("/api/user/profile", {
+    fetch("http://localhost:8080/api/user/profile", {
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),
       },
@@ -16,11 +18,12 @@ function UserDashboard() {
         return res.json();
       })
       .then(data => {
-        console.log("User Data:", data); // debug
         setUser(data);
+        setLoading(false);
       })
       .catch(err => {
         console.error(err);
+        setLoading(false);
       });
   }, []);
 
@@ -31,7 +34,7 @@ function UserDashboard() {
 
   // ✅ Update profile
   const updateProfile = () => {
-    fetch("/api/user/profile", {
+    fetch("http://localhost:8080/api/user/profile", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -47,70 +50,86 @@ function UserDashboard() {
       });
   };
 
+  // ⏳ Loading state
+  if (loading) {
+    return <h3 className="text-center mt-10">Loading profile...</h3>;
+  }
+
   return (
-    <div style={{
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      minHeight: "100vh",
-      background: "#f4f6f8"
-    }}>
-      <div style={{
-        width: "400px",
-        background: "#fff",
-        padding: "30px",
-        borderRadius: "10px",
-        boxShadow: "0 0 10px rgba(0,0,0,0.1)"
-      }}>
+  <div className="profile-wrapper">
+    <div className="profile-card">
 
-        <h2 style={{ textAlign: "center", marginBottom: "20px" }}>
-          User Profile
-        </h2>
+      <h2>User Profile</h2>
 
-        {/* 👁 VIEW MODE */}
-        {!editMode ? (
-          <>
-            <p><b>First Name:</b> {user.firstName}</p>
-            <p><b>Last Name:</b> {user.lastName}</p>
-            <p><b>Gender:</b> {user.gender}</p>
-            <p><b>Age:</b> {user.age}</p>
-            <p><b>Location:</b> {user.location}</p>
+      {!editMode ? (
+        <>
+          <div className="profile-row">
+            <span>First Name</span>
+            <strong>{user.firstName}</strong>
+          </div>
 
-            <button onClick={() => setEditMode(true)}>
-              Edit Profile
-            </button>
-          </>
-        ) : (
+          <div className="profile-row">
+            <span>Last Name</span>
+            <strong>{user.lastName}</strong>
+          </div>
 
-        /* ✏ EDIT MODE */
-          <>
-            <label>First Name</label>
-            <input name="firstName" value={user.firstName || ""} onChange={handleChange} />
+          <div className="profile-row">
+            <span>Gender</span>
+            <strong>{user.gender}</strong>
+          </div>
 
-            <label>Last Name</label>
-            <input name="lastName" value={user.lastName || ""} onChange={handleChange} />
+          <div className="profile-row">
+            <span>Age</span>
+            <strong>{user.age}</strong>
+          </div>
 
-            <label>Gender</label>
-            <select name="gender" value={user.gender || ""} onChange={handleChange}>
-              <option value="">Select</option>
-              <option value="Male">Male</option>
-              <option value="Female">Female</option>
-            </select>
+          <div className="profile-row">
+            <span>Location</span>
+            <strong>{user.location}</strong>
+          </div>
 
-            <label>Age</label>
-            <input name="age" value={user.age || ""} onChange={handleChange} />
+          <button
+            className="btn btn-primary btn-full mt-10"
+            onClick={() => setEditMode(true)}
+          >
+            Edit Profile
+          </button>
+        </>
+      ) : (
+        <>
+          <label>First Name</label>
+          <input name="firstName" value={user.firstName || ""} onChange={handleChange} />
 
-            <label>Location</label>
-            <input name="location" value={user.location || ""} onChange={handleChange} />
+          <label>Last Name</label>
+          <input name="lastName" value={user.lastName || ""} onChange={handleChange} />
 
-            <button onClick={updateProfile}>
+          <label>Gender</label>
+          <select name="gender" value={user.gender || ""} onChange={handleChange}>
+            <option value="">Select</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+          </select>
+
+          <label>Age</label>
+          <input name="age" value={user.age || ""} onChange={handleChange} />
+
+          <label>Location</label>
+          <input name="location" value={user.location || ""} onChange={handleChange} />
+
+          <div style={{ display: "flex", gap: "10px" }}>
+            <button className="btn btn-success btn-full" onClick={updateProfile}>
               Save
             </button>
-          </>
-        )}
-      </div>
+
+            <button className="btn btn-danger btn-full" onClick={() => setEditMode(false)}>
+              Cancel
+            </button>
+          </div>
+        </>
+      )}
     </div>
-  );
+  </div>
+);
 }
 
 export default UserDashboard;
