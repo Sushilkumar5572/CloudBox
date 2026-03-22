@@ -1,7 +1,9 @@
 package com.cloudbox.controller;
 
+import com.cloudbox.dto.UserProfileDTO;
 import com.cloudbox.model.User;
 import com.cloudbox.service.UserService;
+
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -17,16 +19,16 @@ public class UserController {
         this.userService = userService;
     }
 
-    // ✅ GET PROFILE (SECURE)
+    // ================= GET PROFILE =================
     @GetMapping("/profile")
-    public User getProfile(Principal principal) {
-        return userService.getProfile(principal.getName());
+    public UserProfileDTO getProfile(Principal principal) {
+        return userService.getProfileDTO(principal.getName());
     }
 
-    // ✅ UPDATE PROFILE (SECURE)
+    // ================= UPDATE PROFILE =================
     @PutMapping("/profile")
-    public User updateProfile(@RequestBody User user,
-                              Principal principal) {
-        return userService.updateProfile(principal.getName(), user);
+    public UserProfileDTO updateProfile(@RequestBody UserProfileDTO dto,
+                                        Principal principal) {
+        return userService.updateProfileDTO(principal.getName(), dto);
     }
 }

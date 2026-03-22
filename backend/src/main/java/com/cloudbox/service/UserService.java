@@ -1,5 +1,6 @@
 package com.cloudbox.service;
 
+import com.cloudbox.dto.UserProfileDTO;
 import com.cloudbox.model.User;
 import com.cloudbox.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -13,25 +14,45 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    // ✅ GET PROFILE
-    public User getProfile(String email) {
-        return userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-    }
-
-    // ✅ UPDATE PROFILE
-    public User updateProfile(String email, User updatedUser) {
+    // ================= GET PROFILE (SAFE) =================
+    public UserProfileDTO getProfileDTO(String email) {
 
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        // ✅ update allowed fields only
-        user.setFirstName(updatedUser.getFirstName());
-        user.setLastName(updatedUser.getLastName());
-        user.setGender(updatedUser.getGender());
-        user.setAge(updatedUser.getAge());
-        user.setLocation(updatedUser.getLocation());
+        return mapToDTO(user);
+    }
 
-        return userRepository.save(user);
+    // ================= UPDATE PROFILE =================
+    public UserProfileDTO updateProfileDTO(String email, UserProfileDTO dto) {
+
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // ✅ Update only allowed fields
+        user.setFirstName(dto.getFirstName());
+        user.setLastName(dto.getLastName());
+        user.setGender(dto.getGender());
+        user.setAge(dto.getAge());
+        user.setLocation(dto.getLocation());
+
+        userRepository.save(user);
+
+        return mapToDTO(user);
+    }
+
+    // ================= HELPER =================
+    private UserProfileDTO mapToDTO(User user) {
+
+        UserProfileDTO dto = new UserProfileDTO();
+
+        dto.setFirstName(user.getFirstName());
+        dto.setLastName(user.getLastName());
+        dto.setEmail(user.getEmail());
+        dto.setGender(user.getGender());
+        dto.setAge(user.getAge());
+        dto.setLocation(user.getLocation());
+
+        return dto;
     }
 }

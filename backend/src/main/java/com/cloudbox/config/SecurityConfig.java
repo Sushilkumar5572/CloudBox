@@ -16,27 +16,41 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     @Autowired
-    JwtAuthFilter jwtAuthFilter;
+    private JwtAuthFilter jwtAuthFilter;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http
-                .csrf(csrf -> csrf.disable())
+            // Disable CSRF
+            .csrf(csrf -> csrf.disable())
 
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            // Stateless session
+            .sessionManagement(session ->
+                session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            )
 
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll()
+            // Authorization rules
+            .authorizeHttpRequests(auth -> auth
 
-                        // ✅ FIXED HERE
-                        .requestMatchers("/api/admin/**").hasAuthority("ADMIN")
-                        .requestMatchers("/api/user/**").hasAnyAuthority("USER", "ADMIN")
+                // Public
+                .requestMatchers("/api/auth/**").permitAll()
 
-                        .anyRequest().authenticated()
-                )
+                // Admin
+                .requestMatchers("/api/admin/**").hasRole("ADMIN")
 
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                // User + Admin
+                .requestMatchers("/api/user/**").hasAnyRole("USER", "ADMIN")
+
+                // Files (WEEK 2)
+                .requestMatchers("/api/files/**").hasAnyRole("USER", "ADMIN")
+
+                // Everything else
+                .anyRequest().authenticated()
+            )
+
+            // JWT filter
+            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
