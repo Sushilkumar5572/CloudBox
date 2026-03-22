@@ -13,11 +13,21 @@ import Upload from "./pages/Upload";
 import Folders from "./pages/Folders";
 import Profile from "./pages/Profile";
 
-// ✅ Sidebar pages
+// ✅ User Sidebar pages
 import SharedWithMe from "./pages/SharedWithMe";
 import SharedByMe from "./pages/SharedByMe";
 import Collaboration from "./pages/Collaboration";
 import ActivityHistory from "./pages/ActivityHistory";
+
+// ✅ Admin pages
+import AdminUsers from "./pages/admin/AdminUsers";
+import AdminLogs from "./pages/admin/AdminLogs";
+import AdminFiles from "./pages/admin/AdminFiles";
+import AdminFileSharingControl from "./pages/admin/AdminFileSharingControl";
+import CollaborationActivity from "./pages/admin/CollaborationActivity";
+import AdminNotifications from "./pages/admin/AdminNotifications";
+import AdminSettings from "./pages/admin/AdminSettings";
+
 import ProtectedRoute from "./auth/ProtectedRoute";
 
 import "./index.css";
@@ -72,8 +82,6 @@ function App() {
           }
         />
 
-        {/* ✅ FIXED ROUTES */}
-
         <Route
           path="/shared-with"
           element={
@@ -107,7 +115,7 @@ function App() {
             <ProtectedRoute allowedRoles={["USER", "ADMIN"]}>
               <ActivityHistory />
             </ProtectedRoute>
-        }
+          }
         />
 
         <Route
@@ -120,11 +128,75 @@ function App() {
         />
 
         {/* ================= ADMIN ================= */}
+
         <Route
           path="/admin"
           element={
             <ProtectedRoute allowedRoles={["ADMIN"]}>
               <AdminDashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/users"
+          element={
+            <ProtectedRoute allowedRoles={["ADMIN"]}>
+              <AdminUsers />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/logs"
+          element={
+            <ProtectedRoute allowedRoles={["ADMIN"]}>
+              <AdminLogs />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/files"
+          element={
+            <ProtectedRoute allowedRoles={["ADMIN"]}>
+              <AdminFiles />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/sharing"
+          element={
+            <ProtectedRoute allowedRoles={["ADMIN"]}>
+              <AdminFileSharingControl />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/activity"
+          element={
+            <ProtectedRoute allowedRoles={["ADMIN"]}>
+              <CollaborationActivity />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/notifications"
+          element={
+            <ProtectedRoute allowedRoles={["ADMIN"]}>
+              <AdminNotifications />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/settings"
+          element={
+            <ProtectedRoute allowedRoles={["ADMIN"]}>
+              <AdminSettings />
             </ProtectedRoute>
           }
         />
